@@ -48,7 +48,7 @@ function writeText(selectedLayers,includeComments){
   
   textString += "//Generated automatically by Swift Color Palette."
   textString += newLine
-  textString += "https://github.com/nahitheper/SwiftColorPalette"
+  textString += "//https://github.com/nahitheper/SwiftColorPalette"
   textString += newLine
   textString += "enum ColorPalette {"
 
