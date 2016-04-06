@@ -22,9 +22,9 @@ var onRun = function(context) {
     if (options.exportFile){
       var savedFile = writeTextToFile(str);
       if (savedFile){
-        showMessage("File saved.");
+        showMessage("File saved.").runModal();
       }else{
-        showMessage("File not saved.");
+        showMessage("File not saved.").runModal();
       }
     }else{
       showMessage(str).runModal();
@@ -46,10 +46,11 @@ function writeText(selectedLayers,includeComments){
   var newLine = "\n";
   var textString = "";
   
-  textString += "//pragma mark - "
+  textString += "//Generated automatically by Swift Color Palette."
+  textString += newLine
+  textString += "https://github.com/nahitheper/SwiftColorPalette"
   textString += newLine
   textString += "enum ColorPalette {"
-  textString += newLine
 
   for (var i = 0; i < selectedLayers.count(); i++) {
     var layer = selectedLayers[i];
@@ -64,6 +65,7 @@ function writeText(selectedLayers,includeComments){
 }
 
 function writeTextToFile(text) {
+  
   var openPanel = [NSOpenPanel openPanel]
   [openPanel setCanChooseDirectories:true]
   [openPanel setCanChooseFiles:false]
@@ -74,32 +76,27 @@ function writeTextToFile(text) {
   [openPanel runModal]
   var directory = [openPanel filename];
   var path = directory + "/ColorPalette.swift";
-
+  
   var result = false;
   if (typeof path !== 'string')
     return result;
-
   var nsstring = NSString.stringWithUTF8String(text);
-
   result = [nsstring writeToFile:path atomically:1 encoding:NSUTF8StringEncoding error:null];
-
   if (!result) {
       result = false;
   } else {
       result = true;
   }
-
   return result;
 }
 
 function alertResponse(alert, code) {
   if (code == "1000") {
     return {
-      exportFile: alert.viewAtIndex(0).state(),
-      include: alert.viewAtIndex(1).state()
+      exportFile: alert.viewAtIndex(0).state()
+      //include: alert.viewAtIndex(1).state()
     }
   }
-
   return null;
 }
 
@@ -120,7 +117,7 @@ function createDialog(){
   var exportFileChecBox = createCheckbox("Export file");
   var includeHex = createCheckbox("Include Hex codes with comment.");
   alert.addAccessoryView(exportFileChecBox);
-  alert.addAccessoryView(includeHex);
+  //alert.addAccessoryView(includeHex);
   alert.addButtonWithTitle('OK');
   alert.addButtonWithTitle('Cancel');
 
