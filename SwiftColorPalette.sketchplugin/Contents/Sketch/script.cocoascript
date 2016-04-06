@@ -1,0 +1,138 @@
+@import "library.cocoascript";
+var onRun = function(context) {
+
+  var documentName = context.document.displayName();
+  var selectedLayers = context.selection;
+  var selectedCount = selectedLayers.count();
+  var str = "";
+
+  if (selectedCount == 0) {
+    showMessage("No layers are selected.").runModal();
+  } else {
+    // Show dialog
+    var alert = createDialog();
+    var options = alertResponse(alert,alert.runModal());
+
+    if (options.include){
+      str = writeText(selectedLayers,true);
+    }else{
+      str = writeText(selectedLayers,false);
+    }
+
+    if (options.exportFile){
+      var savedFile = writeTextToFile(str);
+      if (savedFile){
+        showMessage("File saved.");
+      }else{
+        showMessage("File not saved.");
+      }
+    }else{
+      showMessage(str).runModal();
+    }
+  }
+};
+
+function convertUIColor(color) {
+  var red = color.red().toFixed(3).toString();
+  var green = color.green().toFixed(3).toString();
+  var blue = color.blue().toFixed(3).toString();
+  var alpha = color.alpha().toFixed(3).toString();
+
+  return "UIColor(red:"+red+", green: "+green+", blue: "+blue+", alpha: "+alpha+")";
+};
+
+function writeText(selectedLayers,includeComments){
+
+  var newLine = "\n";
+  var textString = "";
+  
+  textString += "//pragma mark - "
+  textString += newLine
+  textString += "enum ColorPalette {"
+  textString += newLine
+
+  for (var i = 0; i < selectedLayers.count(); i++) {
+    var layer = selectedLayers[i];
+    textString += newLine
+    textString += newLine
+    textString += "    static let "+layer.name()+" =  " +  convertUIColor(layer.style().fills().firstObject().color())
+  }
+
+  textString += newLine
+  textString += "}"
+  return textString;
+}
+
+function writeTextToFile(text) {
+  var openPanel = [NSOpenPanel openPanel]
+  [openPanel setCanChooseDirectories:true]
+  [openPanel setCanChooseFiles:false]
+  [openPanel setCanCreateDirectories:false]
+  [openPanel setDirectoryURL:[NSURL fileURLWithPath:"~/Documents/"]]
+  [openPanel setTitle:"Choose a file"]
+  [openPanel setPrompt:"Choose"]
+  [openPanel runModal]
+  var directory = [openPanel filename];
+  var path = directory + "/ColorPalette.swift";
+
+  var result = false;
+  if (typeof path !== 'string')
+    return result;
+
+  var nsstring = NSString.stringWithUTF8String(text);
+
+  result = [nsstring writeToFile:path atomically:1 encoding:NSUTF8StringEncoding error:null];
+
+  if (!result) {
+      result = false;
+  } else {
+      result = true;
+  }
+
+  return result;
+}
+
+function alertResponse(alert, code) {
+  if (code == "1000") {
+    return {
+      exportFile: alert.viewAtIndex(0).state(),
+      include: alert.viewAtIndex(1).state()
+    }
+  }
+
+  return null;
+}
+
+function createCheckbox(checkBoxLabel) {
+  var checkbox = NSButton.alloc().initWithFrame( NSMakeRect( 0, 0, 300, 18 ) );
+  checkbox.setButtonType( NSSwitchButton );
+  checkbox.setTitle( checkBoxLabel );
+  checkbox.setTag( checkBoxLabel );
+  checkbox.setState( false );
+
+  return checkbox;
+}
+
+function createDialog(){
+  var alert = COSAlertWindow.new();
+  alert.setMessageText("Swift Color Palette");
+  alert.setInformativeText("Choose your options.");
+  var exportFileChecBox = createCheckbox("Export file");
+  var includeHex = createCheckbox("Include Hex codes with comment.");
+  alert.addAccessoryView(exportFileChecBox);
+  alert.addAccessoryView(includeHex);
+  alert.addButtonWithTitle('OK');
+  alert.addButtonWithTitle('Cancel');
+
+  return alert;
+}
+
+function showMessage(informationText){
+  var alert = COSAlertWindow.new();
+
+  alert.setMessageText("Swift Color Palette");
+  alert.setInformativeText(informationText);
+  alert.addButtonWithTitle('OK');
+
+  return alert;
+}
