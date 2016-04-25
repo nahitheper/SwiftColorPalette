@@ -50,6 +50,8 @@ function writeText(selectedLayers,includeComments){
   textString += newLine
   textString += "//https://github.com/nahitheper/SwiftColorPalette"
   textString += newLine
+  textString += "import UIKit"
+  textString += newLine
   textString += "enum ColorPalette {"
 
   for (var i = 0; i < selectedLayers.count(); i++) {
