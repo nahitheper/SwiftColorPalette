@@ -13,7 +13,7 @@ Installation
 Short Demo
 =============================
 
-<img src="./demo.gif" width=500 alt="Swift Color Palette" /> 
+<img src="./demo.gif" width="100%" alt="Swift Color Palette" /> 
 
 Usage
 =============================
