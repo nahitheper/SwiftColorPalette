@@ -9,6 +9,7 @@ Installation
 =============================
 
 [Download](https://github.com/nahitheper/SwiftColorPalette/archive/master.zip) and extract the contents of this repository. Then double-click the `SwiftColorPalette.sketchplugin` bundle to install the plugin.
+In [Sketch Toolbox](http://sketchtoolbox.com), search for 'Swift Color Palette' and tap Install.
 
 Short Demo
 =============================
@@ -20,7 +21,7 @@ Usage
 * Rename color palette layer(s)
 * Select a layer(s)
 * Run using ```Plugins > Menu > Swift Color Palette```
-* Select a Export File (optional)
+* Select a Export File (optional) or you can choose copy to clipboard.
 * Click OK.
 
 Example Code
