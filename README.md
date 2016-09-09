@@ -35,3 +35,10 @@ enum ColorPalette {
     static let PrimaryColor =  UIColor(red:0.129, green: 0.133, blue: 0.145, alpha: 1.000)
 }
 ```
+
+Feedback
+=========
+
+If you have any questions, find a bug, or have ideas for ways to improve the plugin, ping me on twitter: @nahitheper
+
+

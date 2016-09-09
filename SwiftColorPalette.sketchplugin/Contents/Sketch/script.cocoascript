@@ -27,7 +27,7 @@ var onRun = function(context) {
         showMessage("File not saved.").runModal();
       }
     }else{
-      showMessage(str).runModal();
+      copyToclipBoard(str);
     }
   }
 };
@@ -46,9 +46,9 @@ function writeText(selectedLayers,includeComments){
   var newLine = "\n";
   var textString = "";
   
-  textString += "//Generated automatically by Swift Color Palette."
+  textString += "// Generated automatically by Swift Color Palette."
   textString += newLine
-  textString += "//https://github.com/nahitheper/SwiftColorPalette"
+  textString += "// https://github.com/nahitheper/SwiftColorPalette"
   textString += newLine
   textString += "import UIKit"
   textString += newLine
@@ -65,7 +65,13 @@ function writeText(selectedLayers,includeComments){
   textString += "}"
   return textString;
 }
+function copyToclipBoard(text){
 
+  var pasteBoard = NSPasteboard.generalPasteboard();
+  pasteBoard.clearContents()
+  pasteBoard.writeObjects([text]);
+  showMessage("Successfully copied to clipboard.").runModal();
+}
 function writeTextToFile(text) {
   
   var openPanel = [NSOpenPanel openPanel]
@@ -115,7 +121,7 @@ function createCheckbox(checkBoxLabel) {
 function createDialog(){
   var alert = COSAlertWindow.new();
   alert.setMessageText("Swift Color Palette");
-  alert.setInformativeText("Choose your options.");
+  alert.setInformativeText("Choose your options. Export file or copy to clipboard ?");
   var exportFileChecBox = createCheckbox("Export file");
   var includeHex = createCheckbox("Include Hex codes with comment.");
   alert.addAccessoryView(exportFileChecBox);
