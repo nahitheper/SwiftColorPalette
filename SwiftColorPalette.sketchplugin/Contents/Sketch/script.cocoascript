@@ -39,17 +39,22 @@ function convertUIColor(color) {
   var alpha = color.alpha().toFixed(3).toString();
 
   return "UIColor(red:"+red+", green: "+green+", blue: "+blue+", alpha: "+alpha+")";
-};
+}
+
+function makeEnumCaseName(string){
+    return string.charAt(0).toLowerCase() + string.substr(1)
+}
 
 function writeText(selectedLayers,includeComments){
 
   var newLine = "\n";
   var textString = "";
-  
-  textString += "// Generated automatically by Swift Color Palette."
-  textString += newLine
-  textString += "// https://github.com/nahitheper/SwiftColorPalette"
-  textString += newLine
+  if (includeComments) {
+    textString += "// Generated automatically by Swift Color Palette."
+    textString += newLine
+    textString += "// https://github.com/nahitheper/SwiftColorPalette"
+    textString += newLine
+  }
   textString += "import UIKit"
   textString += newLine
   textString += "enum ColorPalette {"
@@ -58,20 +63,21 @@ function writeText(selectedLayers,includeComments){
     var layer = selectedLayers[i];
     textString += newLine
     textString += newLine
-    textString += "    static let "+layer.name()+" =  " +  convertUIColor(layer.style().fills().firstObject().color())
+    textString += "    static let "+makeEnumCaseName(layer.name())+" =  " +  convertUIColor(layer.style().fills().firstObject().color())
   }
 
   textString += newLine
   textString += "}"
   return textString;
 }
-function copyToclipBoard(text){
 
+function copyToclipBoard(text){
   var pasteBoard = NSPasteboard.generalPasteboard();
   pasteBoard.clearContents()
   pasteBoard.writeObjects([text]);
   showMessage("Successfully copied to clipboard.").runModal();
 }
+
 function writeTextToFile(text) {
   
   var openPanel = [NSOpenPanel openPanel]
