@@ -7,13 +7,13 @@
       "shortcut" : "",
       "name" : "Swift Color Palette !",
       "identifier" : "swiftColorPalette"
-    },
+    }
   ],
   "menu": {
     "isRoot": true,
     "items": [
-      "swiftColorPalette",
-    ],
+      "swiftColorPalette"
+    ]
   },
   "identifier" : "com.example.sketch.swiftColorPalette",
   "version" : "1.0",
